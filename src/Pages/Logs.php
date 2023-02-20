@@ -20,7 +20,15 @@ class Logs extends Page
     protected static string $view = 'filament-log-manager::pages.logs';
 
     public ?string $logFile = null;
-
+    //Using https://github.com/althinect/filament-spatie-roles-permissions, hide and restrict the logs panel.
+    public function mount(): void
+    {
+        abort_unless(Auth::user()->hasRole(['Admin']),403);
+    }
+    protected static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->hasRole(['Admin']);
+    }
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
